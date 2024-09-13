@@ -157,7 +157,8 @@ function App() {
 
                         </TabList>
 
-                        <TabPanel color='white' value='1'> 
+                        <TabPanel color='white' value='1' > 
+                        
                               <BlogView />
                         </TabPanel>
 
