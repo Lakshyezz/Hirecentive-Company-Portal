@@ -8,8 +8,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import GridIcon from "../assets/GridIcon";
-import ListIcon from "../assets/ListIcon";
+import GridIcon from "../../assets/GridIcon";
+import ListIcon from "../../assets/ListIcon";
+import ToggleListToGrid from "../ToggleListToGrid";
 
 const images = [
   {
@@ -55,17 +56,6 @@ const BlogView = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [listView, setListView] = useState(false);
 
-  const toggleListView = () => setListView(!listView);
-
-  const iconContainer = {
-    padding: 8,
-    display: "flex",
-    justifyContent: "end",
-    borderRadius: 8,
-    border: "solid 1px grey",
-    gap: 10,
-    cursor: "pointer",
-  };
   const wrapper = {
     padding: 0,
     display: "flex",
@@ -80,12 +70,14 @@ const BlogView = () => {
   return (
     <Container style={wrapper}>
 
-      <span style={iconContainer} onClick={toggleListView}>
+
+      <ToggleListToGrid listView={listView}  setListView={setListView}/>
+      {/* <span style={iconContainer} onClick={toggleListView}>
 
         <GridIcon show={listView}/>
         <ListIcon show={listView}/>
 
-      </span>
+      </span> */}
       <Grid container spacing={2} direction={isMobile ? "column" : "row"}>
 
         {listView ? images.map((image, index) => (
