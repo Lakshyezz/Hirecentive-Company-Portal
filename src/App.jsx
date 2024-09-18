@@ -23,10 +23,11 @@ import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
 import BlogView from "./components/Blog/BlogView";
 import YoutubeView from "./components/Youtube/YoutubeView.jsx";
+import Reels from "./components/Reels/Reel";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [currentTab, setCurrentTab] = useState("1");
+  const [currentTab, setCurrentTab] = useState("3");
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const isLaptop = useMediaQuery("(max-width:1200px) and (min-width:600px)");
@@ -190,8 +191,8 @@ function App() {
               <TabList onChange={handleTabChange}>
                 <Tab label="Blogs" value="1" style={paragraph} />
                 <Tab label="Youtube" value="2" style={paragraph} />
-                <Tab label="Shorts" value="3" style={paragraph} />
-                <Tab label="Reels" value="4" style={paragraph} />
+                <Tab label="Reels" value="3" style={paragraph} />
+                <Tab label="Shorts" value="4" style={paragraph} />
                 <Tab label="Linkedin Shorts" value="5" style={paragraph} />
               </TabList>
 
@@ -202,8 +203,10 @@ function App() {
               <TabPanel value="2">
                 <YoutubeView />
               </TabPanel>
-              <TabPanel value="3"> Shorts</TabPanel>
-              <TabPanel value="4"> Reels</TabPanel>
+              <TabPanel value="3"> 
+                <Reels />
+              </TabPanel>
+              <TabPanel value="4"> Shorts</TabPanel>
               <TabPanel value="5"> Linkedin Shorts</TabPanel>
             </TabContext>
           </Box>

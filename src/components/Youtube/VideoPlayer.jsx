@@ -2,12 +2,12 @@
 import React from 'react';
 import YouTube from 'react-youtube';
 
-const VideoPlayer = ({ videoId }) => {
+const VideoPlayer = ({ videoId, listView }) => {
   const opts = {
-    height: '390',
-    width: '640',
+    height: listView? '195' :'390',
+    width: listView? '320' :'640',
     playerVars: {
-      autoplay: 1,
+      autoplay: listView? 0 :  1,
     },
   };
 

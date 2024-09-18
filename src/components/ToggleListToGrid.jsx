@@ -4,7 +4,7 @@ import ListIcon from "../assets/ListIcon";
 
 
 const ToggleListToGrid = ({ listView ,setListView }) => {
-    
+  
     const toggleListView = () => setListView(!listView);
 
     const iconContainer = {
