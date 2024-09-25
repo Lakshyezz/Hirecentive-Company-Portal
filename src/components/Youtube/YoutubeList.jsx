@@ -2,32 +2,25 @@ import React from 'react';
 import { Box, Typography, Grid, Paper } from '@mui/material';
 import VideoPlayer from './VideoPlayer';
 
-const YoutubeListView = ({ videoData }) => {
+const YoutubeListView = ({ videos }) => {
 
-// const videoData = [
-//     {
-//         img: 'https://via.placeholder.com/150',
-//         title: 'Sample Video Title',
-//         description: 'This is a description of the video.',
-//     },
-//     // Add more video objects here
-//     ];
-
+  console.log("YoutubeListView => " + JSON.stringify(videos));
 
   return (
     <Box sx={{ flexGrow: 1,}}>
-    {videoData.map((video, index) => (
+    {videos.length != 0 ? videos.map((video, index) => (
 
         <Grid container spacing={4} style={{ backgroundColor: 'transparent'}}>
 
           <Grid item>
             {/* <img src={video.img} alt={video.title} width={150} /> */}
-            <VideoPlayer videoId={video.id} listView={true}/>
+            <VideoPlayer videoId={video.src} listView={true}/>
+
           </Grid>
 
 
 
-              <Grid item xs container direction="column" alignItems='start' justifyContent={'center'} gap={2} spacing={2} >
+            <Grid item xs container direction="column" alignItems='start' justifyContent={'center'} gap={2} spacing={2} >
                 <Typography color='white' gutterBottom variant="subtitle1" component ='p'>
                   {video.title}
                 </Typography>
@@ -37,7 +30,7 @@ const YoutubeListView = ({ videoData }) => {
             </Grid>
 
         </Grid>
-    ))}
+    )) :  <Typography> Add some videos</Typography>}
   </Box>
   )
 }

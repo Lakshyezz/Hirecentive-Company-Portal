@@ -24,10 +24,11 @@ import Box from "@mui/material/Box";
 import BlogView from "./components/Blog/BlogView";
 import YoutubeView from "./components/Youtube/YoutubeView.jsx";
 import Reels from "./components/Reels/Reel";
+import YoutubeShorts from "./components/Youtube/YoutubeShorts";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [currentTab, setCurrentTab] = useState("3");
+  const [currentTab, setCurrentTab] = useState("2");
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const isLaptop = useMediaQuery("(max-width:1200px) and (min-width:600px)");
@@ -193,7 +194,7 @@ function App() {
                 <Tab label="Youtube" value="2" style={paragraph} />
                 <Tab label="Reels" value="3" style={paragraph} />
                 <Tab label="Shorts" value="4" style={paragraph} />
-                <Tab label="Linkedin Shorts" value="5" style={paragraph} />
+              
               </TabList>
 
               <TabPanel color="white" value="1">
@@ -206,8 +207,9 @@ function App() {
               <TabPanel value="3"> 
                 <Reels />
               </TabPanel>
-              <TabPanel value="4"> Shorts</TabPanel>
-              <TabPanel value="5"> Linkedin Shorts</TabPanel>
+              <TabPanel value="4"> 
+                <YoutubeShorts />
+              </TabPanel>
             </TabContext>
           </Box>
         </Container>

@@ -20,8 +20,12 @@ const ToggleListToGrid = ({ listView ,setListView }) => {
   return (
     <span style={iconContainer} onClick={toggleListView}>
 
-      <GridIcon show={listView} />
-      <ListIcon show={listView} />
+
+      {listView ?
+       <ListIcon show={true} /> : <ListIcon show={false}/>}
+        
+      {listView? <GridIcon show={false}/> : <GridIcon show={true}/>}
+
 
     </span>
   );

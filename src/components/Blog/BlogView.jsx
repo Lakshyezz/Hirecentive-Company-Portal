@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Button,
   Container,
   Grid,
   List,
@@ -11,6 +12,8 @@ import {
 import GridIcon from "../../assets/GridIcon";
 import ListIcon from "../../assets/ListIcon";
 import ToggleListToGrid from "../ToggleListToGrid";
+import AddBlogModal from "./AddBlogModal";
+import EditIcon from '@mui/icons-material/Edit';
 
 const images = [
   {
@@ -56,6 +59,41 @@ const BlogView = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [listView, setListView] = useState(false);
 
+  
+  const [blogs, setBlogs] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentBlog, setCurrentBlog] = useState(null);
+  
+  
+  const handleAddBlog = (blog) => {
+    setBlogs([...blogs, blog]);
+    // console.log('blog => ' + blog);
+    
+  };
+  
+  const handleEditBlog = (updatedBlog) => {
+    // console.log("updatedBlog  " + updatedBlog);
+    setBlogs(blogs.map(blog => blog === currentBlog ? updatedBlog : blog));
+    setCurrentBlog(null);
+  };
+  
+  const handleDeleteBlog = (blogToDelete) => {
+    setBlogs(blogs.filter(blog => blog !== blogToDelete));
+  };
+  
+  const handleOpen = (blog = null) =>{
+    // console.log("blog  " + blog.src);
+    setCurrentBlog(blog);
+     setModalOpen(true);
+    }
+  const handleClose = () =>{
+     setModalOpen(false);
+     setCurrentBlog(null);
+    //  console.log('blogs list => ' + blogs);
+    }
+
+    console.log("toggle => " + JSON.stringify(listView));
+  
   const wrapper = {
     padding: 0,
     display: "flex",
@@ -64,14 +102,22 @@ const BlogView = () => {
     gap: 20,
   };
   const title = {
-    color: 'white'
+    color: 'white',
+    display:'flex',
+    gap: '8px',
+    alignItems: 'center',
+    justifiyContent: 'center',
   }
 
   return (
     <Container style={wrapper}>
 
-
+      <Button variant="contained" color="primary" onClick={() => handleOpen()}>
+        Add Blog
+      </Button>
       <ToggleListToGrid listView={listView}  setListView={setListView}/>
+            
+
       {/* <span style={iconContainer} onClick={toggleListView}>
 
         <GridIcon show={listView}/>
@@ -80,34 +126,48 @@ const BlogView = () => {
       </span> */}
       <Grid container spacing={2} direction={isMobile ? "column" : "row"}>
 
-        {listView ? images.map((image, index) => (
+        {listView ? blogs.map((blog, index) => (
           <Grid item xs={12} sm={4} key={index}>
+            
             <img
-              src={image.src}
-              alt={image.title}
-              style={{ width: "100%", borderRadius: 8 }}
+              src={blog.src}
+              alt={blog.title}
+              style={{ width: "100%", bordserRadius: 8 }}
             />
             <Typography variant="subtitle1" align="center" style={title}>
-              {image.title}
+              {blog.title}
+            <span className="edit" onClick={() => handleOpen(blog)} style={{ backgroundColor: 'grey', padding: '4px 4px', display: 'inline', alignItems: 'centers', borderRadius: "4px"}}>
+              <EditIcon fontSize="4px" sx={{ color: 'white' }} />
+            </span>
+            <Button variant="contained" color="error" onClick={() => handleDeleteBlog(blog)}>
+              Delete
+            </Button>
             </Typography>
           </Grid>
         )):   <List>
-          {images.map((item, index) => (
+          {blogs.map((blog, index) => (
             <ListItem key={index} style={{ display: 'flex' , flexDirection: 'column', gap: 8, marginBottom: '20px', }}>
                 <img
 
-                  src={item.src}
-                  alt={item.title}
+                  src={blog.src}
+                  alt={blog.title}
                   style={{ width: "80%",borderRadius: 8 }}
                 />
                 <Typography variant="subtitle1" align="center"  style={title}>
-                  {item.title}
+                  {blog.title}
                 </Typography>
+                <span className="edit" onClick={() => handleOpen(blog)} style={{ backgroundColor: 'grey', padding: '4px 4px', display: 'inline', alignItems: 'centers', borderRadius: "4px"}}>
+                  <EditIcon fontSize="4px" sx={{ color: 'white' }} />
+                </span>
+                <Button variant="contained" color="error" onClick={() => handleDeleteBlog(blog)}>
+                  Delete
+                </Button>
             </ListItem>
           ))}
         </List>}
 
       </Grid>
+      <AddBlogModal  open={modalOpen} handleClose={handleClose} handleAddBlog={handleAddBlog} editBlog={handleEditBlog} currentBlog={currentBlog}/>
 
     </Container>
   );
