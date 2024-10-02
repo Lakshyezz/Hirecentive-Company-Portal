@@ -14,6 +14,7 @@ import ListIcon from "../../assets/ListIcon";
 import ToggleListToGrid from "../ToggleListToGrid";
 import AddBlogModal from "./AddBlogModal";
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "../../assets/DeleteIcon";
 
 const images = [
   {
@@ -62,19 +63,17 @@ const BlogView = () => {
   
   const [blogs, setBlogs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState(null);
+  const [current, setCurrent] = useState(null);
   
   
-  const handleAddBlog = (blog) => {
+  const handleAdd = (blog) => {
     setBlogs([...blogs, blog]);
-    // console.log('blog => ' + blog);
-    
   };
   
-  const handleEditBlog = (updatedBlog) => {
+  const handleEdit = (updatedBlog) => {
     // console.log("updatedBlog  " + updatedBlog);
-    setBlogs(blogs.map(blog => blog === currentBlog ? updatedBlog : blog));
-    setCurrentBlog(null);
+    setBlogs(blogs.map(blog => blog === current ? updatedBlog : blog));
+    setCurrent(null);
   };
   
   const handleDeleteBlog = (blogToDelete) => {
@@ -83,12 +82,12 @@ const BlogView = () => {
   
   const handleOpen = (blog = null) =>{
     // console.log("blog  " + blog.src);
-    setCurrentBlog(blog);
+    setCurrent(blog);
      setModalOpen(true);
     }
   const handleClose = () =>{
      setModalOpen(false);
-     setCurrentBlog(null);
+     setCurrent(null);
     //  console.log('blogs list => ' + blogs);
     }
 
@@ -108,15 +107,24 @@ const BlogView = () => {
     alignItems: 'center',
     justifiyContent: 'center',
   }
+    const button = {
+      backgroundColor: "white",
+      color: "black",
+      height: "40px",
+      borderRadius: '8px',
+    };
+
 
   return (
     <Container style={wrapper}>
 
-      <Button variant="contained" color="primary" onClick={() => handleOpen()}>
-        Add Blog
-      </Button>
-      <ToggleListToGrid listView={listView}  setListView={setListView}/>
-            
+      <Container style={{ width: 'contained', display: 'flex', alignItems: 'center', justifyContent: 'end', gap: '20px'}}>
+          <Button style={button}  variant="contained" onClick={() => handleOpen()}>
+            Add Blog
+          </Button>
+          <ToggleListToGrid listView={listView}  setListView={setListView}/>
+    
+      </Container>        
 
       {/* <span style={iconContainer} onClick={toggleListView}>
 
@@ -140,34 +148,40 @@ const BlogView = () => {
               <EditIcon fontSize="4px" sx={{ color: 'white' }} />
             </span>
             <Button variant="contained" color="error" onClick={() => handleDeleteBlog(blog)}>
-              Delete
+              <DeleteIcon/>
             </Button>
             </Typography>
           </Grid>
         )):   <List>
           {blogs.map((blog, index) => (
-            <ListItem key={index} style={{ display: 'flex' , flexDirection: 'column', gap: 8, marginBottom: '20px', }}>
+            <ListItem key={index} style={{ display: 'flex' , flexDirection: 'column', gap: 8, marginBottom: '20px', border: '1px solid black', padding: '8px 0px', borderRadius:'8px'}}>
                 <img
-
                   src={blog.src}
                   alt={blog.title}
                   style={{ width: "80%",borderRadius: 8 }}
                 />
-                <Typography variant="subtitle1" align="center"  style={title}>
-                  {blog.title}
-                </Typography>
-                <span className="edit" onClick={() => handleOpen(blog)} style={{ backgroundColor: 'grey', padding: '4px 4px', display: 'inline', alignItems: 'centers', borderRadius: "4px"}}>
-                  <EditIcon fontSize="4px" sx={{ color: 'white' }} />
-                </span>
-                <Button variant="contained" color="error" onClick={() => handleDeleteBlog(blog)}>
-                  Delete
-                </Button>
+                <Container style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between'}}>
+
+                    <Typography variant="subtitle1" align="center"  style={title}>
+                      {blog.title}
+                    </Typography>
+
+                    <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'end', gap: '8px', padding: '0px'}}>
+                      <span className="edit" onClick={() => handleOpen(blog)} style={{ backgroundColor: 'grey', padding: '4px 4px', display: 'inline', alignItems: 'centers', borderRadius: "4px"}}>
+                        <EditIcon fontSize="4px" sx={{ color: 'white' }} />
+                      </span>
+                      <span style={{ backgroundColor: '#B50B00', padding: '4px 4px', display: 'inline', justifyContent: 'center',alignItems: 'centers', borderRadius: "4px"}} variant="contained" color="error" onClick={() => handleDeleteBlog(blog)}>
+                        <DeleteIcon/>
+                      </span>
+                    </Container>
+
+                </Container>
             </ListItem>
           ))}
         </List>}
 
       </Grid>
-      <AddBlogModal  open={modalOpen} handleClose={handleClose} handleAddBlog={handleAddBlog} editBlog={handleEditBlog} currentBlog={currentBlog}/>
+      <AddBlogModal  open={modalOpen} handleClose={handleClose} handleAdd={handleAdd} handleEdit={handleEdit} current={current}/>
 
     </Container>
   );

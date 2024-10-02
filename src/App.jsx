@@ -1,19 +1,22 @@
 import { useState } from "react";
 import {
+  Button,
   Container,
   CssBaseline,
   Grid,
   Grid2,
+  IconButton,
   Paper,
+  TextField,
   ThemeProvider,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 
 import HirecentiveLogo from "../src/assets/hirecentiveLogo.png";
-import TwitterImg from "../src/assets/twitter.png";
-import InstaImg from "../src/assets/insta.png";
-import LinkedInImg from "../src/assets/linkedin.png";
+import Twitter from "../src/assets/twitter.png";
+import Instagram from "../src/assets/insta.png";
+import LinkedIn from "../src/assets/linkedin.png";
 import { Link as RouterLink } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TabContext from "@mui/lab/TabContext";
@@ -25,20 +28,23 @@ import BlogView from "./components/Blog/BlogView";
 import YoutubeView from "./components/Youtube/YoutubeView.jsx";
 import Reels from "./components/Reels/Reel";
 import YoutubeShorts from "./components/Youtube/YoutubeShorts";
+import EditIcon from "../src/assets/EditIcon";
+import EditModal from "./components/Social/EditModal";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [currentTab, setCurrentTab] = useState("2");
+  const [currentTab, setCurrentTab] = useState("4");
+  const [isEditing, setIsEditing] = useState(false);
+  const [companyOverview, setCompanyOverview] = useState(
+    "Add your company overview here."
+  );
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const isLaptop = useMediaQuery("(max-width:1200px) and (min-width:600px)");
   const companyLogoUrl =
     "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png";
 
-  // console.log("isMobile => " + isMobile);
-
-  const handleTabChange = (event, index) => setCurrentTab(index);
-
+  // styles
   const paper = {
     padding: "20px 20px",
     textAlign: "center",
@@ -60,11 +66,57 @@ function App() {
     color: "white",
     fontWeight: "200",
   };
-
+  const button = {
+    color: "black",
+    borderRadius: "8px",
+    padding: "8px 0px",
+    // align: 'end',
+    backgroundColor: "white",
+    margin: "12px 0px",
+  };
   const paragraph = {
     fontSize: "18px",
     color: "white",
     fontWeight: "200",
+  };
+
+  // Social Code:
+  const [open, setOpen] = useState(false);
+  const [url, setUrl] = useState("");
+  const [platform, setPlatform] = useState("");
+
+  const [socialLinks, setSocialLinks] = useState({
+    Instagram: "",
+    LinkedIn: "",
+    Twitter: "",
+  });
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleUrlChange = (event) => setUrl(event.target.value);
+  const handlePlatformChange = (event) => setPlatform(event.target.value);
+
+  const handleSubmit = () => {
+    const updatedLinks = { ...socialLinks, [platform]: url };
+    setSocialLinks(updatedLinks);
+    handleClose();
+  };
+
+  // ENDS HERE
+
+  const handleTabChange = (event, index) => setCurrentTab(index);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    setIsEditing(false);
+  };
+
+  const handleTextChange = (e) => {
+    setCompanyOverview(e.target.value);
   };
 
   return (
@@ -151,42 +203,131 @@ function App() {
                 alignItems: "center",
               }}
             >
-              <Typography style={subTitle}> Contact Us </Typography>
-              <Container
-                className="socials"
-                style={{
-                  display: "flex",
-                  gap: "12px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={TwitterImg}
-                  alt="Logo"
-                  style={{ borderRadius: ".25rem", maxHeight: "35px" }}
-                />
-                <img
-                  src={InstaImg}
-                  alt="Logo"
-                  style={{ borderRadius: ".25rem", maxHeight: "30px" }}
-                />
-                <img
-                  src={LinkedInImg}
-                  alt="Logo"
-                  style={{ borderRadius: ".25rem", maxHeight: "30px" }}
-                />
+             <Container style={{ display: 'flex', alignItems: 'center', gap: '12px'}}>
+                <Typography style={subTitle}> Socials </Typography>
+                  <EditModal
+                      socialLinks={socialLinks}
+                      setSocialLinks={setSocialLinks}
+                    />
+             </Container>
+              <Container style={{ padding: '0px'}}>
+                <Box
+                  display="flex"
+                  justifyContent="space-around"
+                  alignItems="center"
+                  mt={4}
+                  padding='0px'
+                >
+                  {socialLinks.Instagram ? (
+                    <a
+                      href={socialLinks.Instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={Instagram}
+                        alt="Instagram"
+                        style={{ width: 40, height: 40, borderRadius: "8px" }}
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={Instagram}
+                      alt="Instagram"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "8px",
+                        opacity: 0.5,
+                      }}
+                    />
+                  )}
+
+                  {socialLinks.LinkedIn ? (
+                    <a
+                      href={socialLinks.LinkedIn}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={LinkedIn}
+                        alt="LinkedIn"
+                        style={{ width: 40, height: 40, borderRadius: "8px" }}
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={LinkedIn}
+                      alt="LinkedIn"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "8px",
+                        opacity: 0.5,
+                      }}
+                    />
+                  )}
+
+                  {socialLinks.Twitter ? (
+                    <a
+                      href={socialLinks.Twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={Twitter}
+                        alt="Twitter"
+                        style={{ width: 40, height: 40, borderRadius: "8px" }}
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={Twitter}
+                      alt="Twitter"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "8px",
+                        opacity: 0.5,
+                      }}
+                    />
+                  )}
+                </Box>
               </Container>
             </Container>
           </Container>
-          <Typography style={paragraph}>
-            Notion is a project management and note-taking software. Notion is a
-            software designed to help members of a company or organization
-            coordinate deadlines, objectives, and assignments for the sake of
-            efficiency and productivity. It can be used as an all-in-one
-            note-taking app. It offers a lot of features such as integrating
-            third-party tools and hosting the pages as web pages.
-          </Typography>
+          <Container>
+            {isEditing ? (
+              <TextField
+                minRows={4}
+                value={companyOverview}
+                onChange={handleTextChange}
+                style={{
+                  color: "white",
+                  border: "1px solid lightgrey",
+                  borderRadius: "12px",
+                  width: "100%",
+                }}
+                InputProps={{
+                  style: {
+                    color: "white",
+                  },
+                }}
+                variant="outlined"
+                multiline
+                fullWidth
+              />
+            ) : (
+              <p style={paragraph}>{companyOverview}</p>
+            )}
+            <Button
+              onClick={isEditing ? handleSaveClick : handleEditClick}
+              style={button}
+            >
+              {isEditing ? "Save" : <EditIcon />}
+            </Button>
+          </Container>
+
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={currentTab}>
               <TabList onChange={handleTabChange}>
@@ -194,7 +335,6 @@ function App() {
                 <Tab label="Youtube" value="2" style={paragraph} />
                 <Tab label="Reels" value="3" style={paragraph} />
                 <Tab label="Shorts" value="4" style={paragraph} />
-              
               </TabList>
 
               <TabPanel color="white" value="1">
@@ -204,10 +344,10 @@ function App() {
               <TabPanel value="2">
                 <YoutubeView />
               </TabPanel>
-              <TabPanel value="3"> 
+              <TabPanel value="3">
                 <Reels />
               </TabPanel>
-              <TabPanel value="4"> 
+              <TabPanel value="4">
                 <YoutubeShorts />
               </TabPanel>
             </TabContext>
