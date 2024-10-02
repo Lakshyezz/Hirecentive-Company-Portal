@@ -21,7 +21,8 @@ const EditModal = ({ socialLinks, setSocialLinks }) => {
     setSocialLinks(updatedLinks);
     handleClose();
   };
-
+  
+  // styles
   const button = {
     color: "black",
     borderRadius: "8px",
@@ -29,6 +30,14 @@ const EditModal = ({ socialLinks, setSocialLinks }) => {
     // align: 'end',
     backgroundColor: "white",
     margin: "12px 0px",
+  };
+  const saveButton = {
+    backgroundColor: "black",
+    color: "white",
+    height: "45px",
+    width: "30%",
+    borderRadius: '8px',
+    fontWeight: '700'
   };
 
   return (
@@ -47,10 +56,11 @@ const EditModal = ({ socialLinks, setSocialLinks }) => {
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
+            
             borderRadius: '8px',
           }}
         >
-          <FormControl fullWidth sx={{ mb: 2 }}>
+          <FormControl fullWidth sx={{ mb: 3 }}>
             <InputLabel id="platform-label">Platform</InputLabel>
             <Select
               labelId="platform-label"
@@ -71,9 +81,9 @@ const EditModal = ({ socialLinks, setSocialLinks }) => {
             variant="outlined"
             value={url}
             onChange={handleUrlChange}
-            sx={{ mb: 2, borderRadius: '8px' }}
+            sx={{ mb: 3, borderRadius: '8px' }}
           />
-          <Button variant="contained" onClick={handleSubmit} sx={{ borderRadius: '8px' }}>
+          <Button variant="contained" onClick={handleSubmit} style={saveButton}>
             Save
           </Button>
         </Box>
